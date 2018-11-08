@@ -21,6 +21,10 @@ include_once 'db_connect.php';
 include_once 'psl-config.php';
 
 $error_msg = "";
+$suggested_usernames = "";
+$pass_arr = array("123456","123456789","qwerty","12345678","111111","1234567890","1234567","password","123123","987654321","qwertyuio","mynoob","123321","666666","18atcskd2w","7777777","1q2w3e4r","654321","555555","3rjs1la7qe","google","1q2w3e4r5t","123qwe","zxcvbnm","1q2w3e");
+
+
 
 if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
     // Sanitize and validate the data passed in
@@ -38,6 +42,29 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
         // If it's not, something really odd has happened
         $error_msg .= '<p class="error">Invalid password configuration.</p>';
     }
+    $shortest =-1;
+    foreach($pass_arr as $pass){
+        $lev = levenshtein($password,$pass);
+        if($lev == 0){
+            $shortest =0;
+            break;
+        }
+        if($lev <= $shortest || $shortest < 0){
+            $shortest = $lev;
+        }
+
+
+    }
+    $pass_status = "";
+    if($shortest <= 3){
+        $pass_status = "WEAK";
+    }
+    elseif($shortest <= 6){
+        $pass_status = "MODERATE";
+    }
+    elseif($shortest <= 15  ){
+        $pass_status = "STRONG";
+    }
 
     // Username validity and password validity have been checked client side.
     // This should should be adequate as nobody gains any advantage from
@@ -46,6 +73,9 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
     
     $prep_stmt = "SELECT id FROM members WHERE email = ? LIMIT 1";
     $stmt = $mysqli->prepare($prep_stmt);
+
+    $prep_stmt2 = "SELECT id FROM members WHERE username = ? LIMIT 1";
+    $stmt2 = $mysqli->prepare($prep_stmt2);
     
     if ($stmt) {
         $stmt->bind_param('s', $email);
@@ -59,6 +89,46 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
     } else {
         $error_msg .= '<p class="error">Database error</p>';
     }
+
+    if ($stmt2) {
+        $stmt2->bind_param('s', $username);
+        $stmt2->execute();
+        $stmt2->store_result();
+        
+        if ($stmt2->num_rows == 1) {
+            // A user with this username address already exists
+            $error_msg .= '<p class="error">A user with this username already exists.</p>';
+            $i = 0;
+            $suggested_usernames .= '<p class="error">Suggested usernames: ';
+            $available_prefix = array("123_", "boss_", "yoyo_", "stud_","123","great_","12_","00_","12","sim_");
+            $available_suffix = array("");
+            while($i < 4){
+                $suggest = rand(0, 9);
+                $suggested_name = $available_prefix[$suggest] . $username;
+                $prep_stmt = "SELECT id FROM members WHERE username = ? LIMIT 1";
+                $stmt = $mysqli->prepare($prep_stmt);
+                if ($stmt) {
+                    $stmt->bind_param('s', $suggested_name);
+                    $stmt->execute();
+                    $stmt->store_result();
+                    
+                    if (!$stmt->num_rows == 1) {
+                        $i++;
+                        $suggested_usernames = $suggested_usernames . '  ,  ' . $suggested_name;
+                    }
+                } else {
+                    $error_msg .= '<p class="error">Database error</p>';
+                }
+            }
+            $suggested_usernames = $suggested_usernames . '</p>';
+            
+
+        }
+    } else {
+        $error_msg .= '<p class="error">Database error</p>';
+    }
+
+
     
     // TODO: 
     // We'll also have to account for the situation where the user doesn't have

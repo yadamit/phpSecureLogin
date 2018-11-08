@@ -50,11 +50,22 @@ include_once 'includes/functions.php';
             <li>Your password and confirmation must match exactly</li>
         </ul>
         <form method="post" name="registration_form" action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>">
+        <?php
+            if(!empty($suggested_usernames)){
+                    echo $suggested_usernames;
+                }
+        ?>
             Username: <input type='text' name='username' id='username' /><br>
             Email: <input type="text" name="email" id="email" /><br>
             Password: <input type="password"
                              name="password" 
                              id="password"/><br>
+                             <?php
+            
+            if(!empty($pass_status)){
+                echo "The Password is ".$pass_status."<br>";
+            }
+        ?>      
             Confirm password: <input type="password" 
                                      name="confirmpwd" 
                                      id="confirmpwd" /><br>
