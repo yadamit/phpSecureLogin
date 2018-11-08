@@ -15,8 +15,70 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function checkStrength(form, password){
-    var p 
+function levenshteinDistance(a, b) {
+    // Create empty edit distance matrix for all possible modifications of
+    // substrings of a to substrings of b.
+    const distanceMatrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
+  
+    // Fill the first row of the matrix.
+    // If this is first row then we're transforming empty string to a.
+    // In this case the number of transformations equals to size of a substring.
+    for (let i = 0; i <= a.length; i += 1) {
+      distanceMatrix[0][i] = i;
+    }
+  
+    // Fill the first column of the matrix.
+    // If this is first column then we're transforming empty string to b.
+    // In this case the number of transformations equals to size of b substring.
+    for (let j = 0; j <= b.length; j += 1) {
+      distanceMatrix[j][0] = j;
+    }
+  
+    for (let j = 1; j <= b.length; j += 1) {
+      for (let i = 1; i <= a.length; i += 1) {
+        const indicator = a[i - 1] === b[j - 1] ? 0 : 1;
+        distanceMatrix[j][i] = Math.min(
+          distanceMatrix[j][i - 1] + 1, // deletion
+          distanceMatrix[j - 1][i] + 1, // insertion
+          distanceMatrix[j - 1][i - 1] + indicator, // substitution
+        );
+      }
+    }
+  
+    return distanceMatrix[b.length][a.length];
+  }
+
+
+
+function checkStrength(pass){
+    var password = pass.value;
+    // alert(password);
+    var common_passwords = ["123456","123456789","qwerty","12345678","111111","1234567890","1234567","password","123123","987654321","qwertyuio","mynoob","123321","666666","18atcskd2w","7777777","1q2w3e4r","654321","555555","3rjs1la7qe","google","1q2w3e4r5t","123qwe","zxcvbnm","1q2w3e"];
+    var shortest_distance = -1;
+    var i =0;
+    for(i=0; i<common_passwords.length; i++){
+        var dist  = levenshteinDistance(common_passwords[i], password);
+        if(dist == 0){
+            shortest_distance = 0;   
+            break;
+        }
+        else if(dist < shortest_distance || shortest_distance < 0){
+            shortest_distance = dist;
+        }
+    }
+    var strength = "";
+    if(shortest_distance <= 3){
+        strength = "weak";
+    }
+    else if(shortest_distance <= 6){
+        strength = "moderate";
+    }
+    else if(shortest_distance <= 12){
+        strength = "strong";
+    }
+    console.log(shortest_distance);
+    document.getElementById("check_strength").innerHTML = strength;
+    return false;
 }
 
 function formhash(form, password) {

@@ -43,30 +43,7 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
         // If it's not, something really odd has happened
         $error_msg .= '<p class="error">Invalid password configuration.</p>';
     }
-    $shortest =-1;
-    foreach($pass_arr as $pass){
-        $lev = levenshtein($password,$pass);
-        if($lev == 0){
-            $shortest =0;
-            break;
-        }
-        if($lev <= $shortest || $shortest < 0){
-            $shortest = $lev;
-        }
-
-
-    }
-    $pass_status = "";
-    if($shortest <= 3){
-        $pass_status = "WEAK";
-    }
-    elseif($shortest <= 6){
-        $pass_status = "MODERATE";
-    }
-    elseif($shortest <= 15  ){
-        $pass_status = "STRONG";
-    }
-
+    
     // Username validity and password validity have been checked client side.
     // This should should be adequate as nobody gains any advantage from
     // breaking these rules.
