@@ -55,15 +55,15 @@ include_once 'includes/functions.php';
                     echo $suggested_usernames;
                 }
         ?>
-            Username: <input type='text' name='username' id='username' /><br>
-            Email: <input type="text" name="email" id="email" /><br>
-            Password: <input type="password"
+            Username:<br> <input type='text' name='username' id='username' /><br>
+            Email:<br> <input type="text" name="email" id="email" /><br>
+            Password:<br> <input type="password"
                              name="password" 
                              id="password"/>
             <input type="button" value="check Strength" onclick="checkStrength(this.form.password);" /><br>
             <p id="check_strength" style="color:red;"></p>
 
-            Confirm password: <input type="password" 
+            Confirm password:<br> <input type="password" 
                                      name="confirmpwd" 
                                      id="confirmpwd" /><br>
             <input type="button" 

@@ -49,6 +49,11 @@ if (login_check($mysqli) == true) {
                    value="Login" 
                    onclick="formhash(this.form, this.form.password);" /> 
         </form>
+        <form action="forgot_password.php" method="post" name="forgot_password">
+            <input type="submit"
+                    value="Forgot Password"/>
+
+        </form>
         <p>If you don't have a login, please <a href="register.php">register</a></p>
         <p>If you are done, please <a href="includes/logout.php">log out</a>.</p>
         <p>You are currently logged <?php echo $logged ?>.</p>
