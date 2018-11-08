@@ -19,6 +19,34 @@
 
 include_once 'psl-config.php';
 
+function checkSecurity($password){
+    $pass_arr = array("123456","123456789","qwerty","12345678","111111","1234567890","1234567","password","123123","987654321","qwertyuio","mynoob","123321","666666","18atcskd2w","7777777","1q2w3e4r","654321","555555","3rjs1la7qe","google","1q2w3e4r5t","123qwe","zxcvbnm","1q2w3e");
+    $shortest =-1;
+    foreach($pass_arr as $pass){
+        $lev = levenshtein($password,$pass);
+        if($lev == 0){
+            $shortest =0;
+            break;
+        }
+        if($lev <= $shortest || $shortest < 0){
+            $shortest = $lev;
+        }
+
+
+    }
+    $pass_status = "";
+    if($shortest <= 3){
+        $pass_status = "WEAK";
+    }
+    elseif($shortest <= 6){
+        $pass_status = "MODERATE";
+    }
+    elseif($shortest <= 15  ){
+        $pass_status = "STRONG";
+    }
+    echo $pass_status . '<br>';
+}
+
 function sec_session_start() {
     $session_name = 'sec_session_id';   // Set a custom session name 
     $secure = SECURE;

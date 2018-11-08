@@ -59,7 +59,11 @@ include_once 'includes/functions.php';
             Email: <input type="text" name="email" id="email" /><br>
             Password: <input type="password"
                              name="password" 
-                             id="password"/><br>
+                             id="password"/>
+
+            <input type="button" value="Check Strength" action="echo 'hello';" />             
+                             
+                             <br>
                              <?php
             
             if(!empty($pass_status)){
