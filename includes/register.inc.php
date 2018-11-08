@@ -35,6 +35,7 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
         // Not a valid email
         $error_msg .= '<p class="error">The email address you entered is not valid</p>';
     }
+    $pwd = $_POST['p'];
     
     $password = filter_input(INPUT_POST, 'p', FILTER_SANITIZE_STRING);
     if (strlen($password) != 128) {

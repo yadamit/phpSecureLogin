@@ -30,7 +30,7 @@
  */
 define("HOST", "localhost"); 			// The host you want to connect to. 
 define("USER", "root"); 			// The database username. 
-define("PASSWORD", "Amit@1998"); 	// The database password. 
+define("PASSWORD", "Garvit17"); 	// The database password. 
 define("DATABASE", "secure_login");             // The database name.
 
 /**

@@ -64,7 +64,11 @@ include_once 'includes/functions.php';
             
             if(!empty($pass_status)){
                 echo "The Password is ".$pass_status."<br>";
+                echo "The Shortest Lev is ".$shortest."<br>";
             }
+            echo "The Shortest Lev is ".$shortest."<br>";
+            echo levenshtein("Password1","password")."<br>";
+            echo $pwd."<br>";
         ?>      
             Confirm password: <input type="password" 
                                      name="confirmpwd" 
