@@ -15,6 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function validateOTP(OTP){
+    var input_OTP = prompt("Enter your OTP here");
+    input_OTP = parseInt(input_OTP);
+    if(input_OTP == OTP){
+        alert("oh yeah");
+    }
+    else{
+        alert("no baby");
+    }
+}
+
+
 function levenshteinDistance(a, b) {
     // Create empty edit distance matrix for all possible modifications of
     // substrings of a to substrings of b.
